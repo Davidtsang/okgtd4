@@ -11,31 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612024250) do
+ActiveRecord::Schema.define(version: 20150612080723) do
 
   create_table "folders", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
+    t.integer  "user_id",     null: false
+    t.integer  "folder_type"
   end
 
   create_table "stuffs", force: true do |t|
     t.text     "content"
     t.datetime "deadline"
-    t.integer  "status"
-    t.integer  "user_id"
+    t.integer  "status",     null: false
+    t.integer  "user_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "folder_id",  null: false
   end
 
   create_table "tags", force: true do |t|
     t.string   "name"
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
     t.integer  "status"
     t.integer  "the_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "tags_stuffs", id: false, force: true do |t|
+    t.integer "tag_id"
+    t.integer "stuff_id"
   end
 
   create_table "users", force: true do |t|

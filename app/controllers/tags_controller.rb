@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   respond_to :html
 
   def index
-    @tags = Tag.all
+    @tags = current_user.tags.all
     respond_with(@tags)
   end
 
@@ -13,7 +13,7 @@ class TagsController < ApplicationController
   end
 
   def new
-    @tag = Tag.new
+    @tag = current_user.tags.new
     respond_with(@tag)
   end
 
@@ -21,7 +21,9 @@ class TagsController < ApplicationController
   end
 
   def create
-    @tag = Tag.new(tag_params)
+    @tag = current_user.tags.new(tag_params)
+    @tag.status = TagsHelper::TAG_STATUS_NORMAL
+
     @tag.save
     respond_with(@tag)
   end

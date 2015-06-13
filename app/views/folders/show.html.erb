@@ -5,5 +5,10 @@
   <%= @folder.name %>
 </p>
 
+
+    <% @folder.stuffs.each do |stuff| %>
+    <p><%=  link_to stuff.content, stuff_path(stuff.id) %>  </p>
+    <% end %>
+
 <%= link_to 'Edit', edit_folder_path(@folder) %> |
 <%= link_to 'Back', folders_path %>

@@ -5,7 +5,8 @@ class FoldersController < ApplicationController
   respond_to :html
 
   def index
-    @folders = Folder.all
+    #@folders = Folder.all
+    @folders =current_user.folders.all
     respond_with(@folders)
   end
 
@@ -39,7 +40,8 @@ class FoldersController < ApplicationController
 
   private
     def set_folder
-      @folder = Folder.find(params[:id])
+      @folder =current_user.folders.find(params[:id])
+      #@folder = Folder.find(params[:id])
     end
 
     def folder_params

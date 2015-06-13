@@ -20,5 +20,14 @@
   <%= @stuff.user_id %>
 </p>
 
+<p>
+  <strong>Tags:</strong>
+  <% @stuff.tags.each do |tag| %>
+   <%= tag.name %>
+  <% end %>
+</p>
+<%= link_to 'Add tag to this stuff',  add_tag_stuff_path %>
+
 <%= link_to 'Edit', edit_stuff_path(@stuff) %> |
 <%= link_to 'Back', stuffs_path %>
+

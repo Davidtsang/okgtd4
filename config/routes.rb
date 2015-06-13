@@ -5,7 +5,12 @@ Okgtd::Application.routes.draw do
 
   resources :folders
 
-  resources :stuffs
+  resources :stuffs do
+    member do
+      get 'add_tag'
+    end
+
+  end
 
   devise_for :user
 

@@ -15,18 +15,15 @@
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.number_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :the_type %><br>
-    <%= f.number_field :the_type %>
-  </div>
+
+    <%= f.hidden_field :user_id %>
+
+
+
+    <%= f.hidden_field :status %>
+
+    <%= f.hidden_field :the_type %>
+
   <div class="actions">
     <%= f.submit %>
   </div>
