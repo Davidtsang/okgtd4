@@ -13,7 +13,7 @@
   <tbody>
     <% @folders.each do |folder| %>
       <tr>
-        <td><%= folder.name %> </td>
+        <td><%= folder.name %> ( <%= folder.stuffs_count %> )</td>
         <td><%= link_to 'Show', folder %></td>
         <td><%= link_to 'Edit', edit_folder_path(folder) %></td>
         <td><%= link_to 'Destroy', folder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
