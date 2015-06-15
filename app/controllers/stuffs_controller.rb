@@ -1,12 +1,90 @@
-
 class StuffsController < ApplicationController
   before_action :set_stuff, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   respond_to :html
 
-  def add_tag
+  def add_tags
     @stuff = current_user.stuffs.find(params[:id])
-    @tags = current_user.tags.all
+
+
+    is_exist_ids = @stuff.tags.ids.to_a
+    if is_exist_ids.count > 0
+      @tags  = current_user.tags.where(["tags.id NOT IN (?)", is_exist_ids])
+    else
+      @tags = current_user.tags.find_all
+    end
+
+
+  end
+
+  def move
+    @stuff = current_user.stuffs.find(params[:id])
+    #move to other folder
+    @folders = current_user.folders.find_all
+
+  end
+
+  def move_act
+    @stuff = current_user.stuffs.find(params[:id])
+    @stuff.folder_id = params[:target_folder]
+    @stuff.save!
+    redirect_to @stuff
+
+  end
+
+  def copy
+    @stuff = current_user.stuffs.find(params[:id])
+    @folders = current_user.folders.find_all
+  end
+
+  def copy_act
+    stuff = current_user.stuffs.find(params[:id])
+
+    new_stuff = current_user.stuffs.build
+    new_stuff.content = stuff.content
+    new_stuff.status = stuff.status
+    new_stuff.folder_id = params[:target_folder]
+
+    new_stuff.save
+
+    redirect_to new_stuff
+
+  end
+
+  def remove_tags
+    @stuff = current_user.stuffs.find(params[:id])
+  end
+
+  def remove_tags_act
+    stuff_tags = params[:stuff_tags]
+    id = params[:id]
+
+    @stuff = current_user.stuffs.find(id)
+
+    stuff_tags.each do |tid|
+
+      tag =@stuff.tags.find(   tid)
+
+      if tag
+        @stuff.tags.delete(tag)
+      end
+
+    end
+
+    redirect_to action: "show", id: id
+
+  end
+
+  def create_stuff_tags
+    stuff_tags = params[:stuff_tags]
+    id = params[:id]
+
+    stuff_tags.each do |tid|
+        TagsStuffs.create!(tag_id: tid, stuff_id: id)
+    end
+
+    redirect_to action: "show", id: id
+
   end
 
   def index
@@ -28,15 +106,15 @@ class StuffsController < ApplicationController
 
   def create
 
-    folder = current_user.folders.find_by_folder_type( FoldersHelper::FOLDER_TYPE_INBOX)
+    folder = current_user.folders.find_by_folder_type(FoldersHelper::FOLDER_TYPE_INBOX)
 
     @stuff = folder.stuffs.new(stuff_params)
     @stuff.status = StuffsHelper::STUFF_STATUS_NORMAL
     @stuff.user_id = current_user.id
     @stuff.save
 
-
     respond_with(@stuff)
+
   end
 
   def update
@@ -51,11 +129,11 @@ class StuffsController < ApplicationController
   end
 
   private
-    def set_stuff
-      @stuff = Stuff.find(params[:id])
-    end
+  def set_stuff
+    @stuff = Stuff.find(params[:id])
+  end
 
-    def stuff_params
-      params.require(:stuff).permit(:content, :deadline, :status,:user_id,:folder_id)
-    end
+  def stuff_params
+    params.require(:stuff).permit(:content, :deadline, :status, :user_id, :folder_id)
+  end
 end

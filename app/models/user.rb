@@ -19,7 +19,13 @@ class User < ActiveRecord::Base
     self.folders.create(name: "Project", folder_type:FoldersHelper::FOLDER_TYPE_PROJCET)
     self.folders.create(name: "Waiting for", folder_type:FoldersHelper::FOLDER_TYPE_WAITING)
     self.folders.create(name: "Someday/Maybe", folder_type:FoldersHelper::FOLDER_TYPE_SOMEDAY)
+    self.folders.create(name: "Schedule", folder_type:FoldersHelper::FOLDER_TYPE_SCHEDULE)
     self.folders.create(name: "Trash", folder_type:FoldersHelper::FOLDER_TYPE_TRASH)
+
+    # add some tag
+    self.tags.create(name:"@home")
+    self.tags.create(name:"@office")
+
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612080723) do
+ActiveRecord::Schema.define(version: 20150614033412) do
 
   create_table "folders", force: true do |t|
     t.string   "name"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20150612080723) do
     t.integer "tag_id"
     t.integer "stuff_id"
   end
+
+  add_index "tags_stuffs", ["tag_id", "stuff_id"], name: "index_tags_stuffs_on_tag_id_and_stuff_id", unique: true
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

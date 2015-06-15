@@ -1,0 +1,17 @@
+<h1>Add tag to this stuff</h1>
+<p>
+  Stuff ref info:
+  <%= @stuff.content %>
+</p>
+<p>
+  Tags list for choose:
+  <%= form_tag(create_stuff_tags_stuff_url, method: 'post') do %>
+      <% @tags.each do |tag| %>
+          <%= check_box_tag("stuff_tags[]",tag.id, false,:id=>"stuff_tags_#{tag.id}") %>
+          <%= label_tag tag.name %><br>
+      <% end %>
+
+      <%= submit_tag("Submit") %>
+  <% end %>
+
+</p>

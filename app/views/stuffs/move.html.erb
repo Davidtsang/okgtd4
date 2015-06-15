@@ -1,0 +1,10 @@
+<h1>Move to </h1>
+
+ <!--a form have selcet-->
+<%= form_tag(move_act_stuff_path, method: 'put') do %>
+    <label>Choose move to where:</label>
+    <select name="target_folder">
+    <%= options_for_select(@folders.map{|f| [f.name, f.id]},  selected:@stuff.folder_id) %>
+        </select>
+    <%= submit_tag "Move" %>
+<% end %>

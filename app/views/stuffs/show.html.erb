@@ -25,8 +25,11 @@
   <% @stuff.tags.each do |tag| %>
    <%= tag.name %>
   <% end %>
+  <span><%= link_to 'Remove', remove_tags_stuff_path %></span>
 </p>
-<%= link_to 'Add tag to this stuff',  add_tag_stuff_path %>
+<%= link_to 'Add tag to this stuff',  add_tags_stuff_path %>
+<%= link_to 'Move to other folder',  move_stuff_path  %>
+<%= link_to 'Copy to other folder', copy_stuff_path %>
 
 <%= link_to 'Edit', edit_stuff_path(@stuff) %> |
 <%= link_to 'Back', stuffs_path %>

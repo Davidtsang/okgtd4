@@ -1,0 +1,10 @@
+<h1>Copy to </h1>
+
+<!--a form have selcet-->
+<%= form_tag(copy_act_stuff_path, method: 'post') do %>
+    <label>Choose copy to where:</label>
+    <select name="target_folder">
+      <%= options_for_select(@folders.map{|f| [f.name, f.id]},  selected:@stuff.folder_id) %>
+    </select>
+    <%= submit_tag "Copy" %>
+<% end %>

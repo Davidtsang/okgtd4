@@ -7,7 +7,15 @@ Okgtd::Application.routes.draw do
 
   resources :stuffs do
     member do
-      get 'add_tag'
+      get 'add_tags'
+      post 'create_stuff_tags'
+      get 'remove_tags'
+      delete 'remove_tags_act'
+      get 'move'
+      put 'move_act'
+      get 'copy'
+      post 'copy_act'
+
     end
 
   end
