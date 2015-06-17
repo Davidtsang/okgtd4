@@ -1,0 +1,57 @@
+$baseFontFamily: 'Helvetica Neue',Helvetica,Arial, "Lantinghei SC","Microsoft YaHei", "微软雅黑", "Hiragino Sans GB", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
+$baseBorderRadius: 4px;
+$borderRadiusLarge:5px;
+$borderRadiusSmall:3px;
+$fontSizeMini:12px;
+$baseFontSize:13px;
+
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+  background-color: $grayLighter;
+
+}
+h1{
+  font-size: 36px;
+
+}
+#desktop{
+  background-color: $white;
+  border-radius: $baseBorderRadius;
+  padding: 60px 20px 20px;
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 60px;
+}
+#footer {
+  background-color: #f5f5f5;
+}
+
+.nav-right-box {
+  @extend .pull-right;
+  font-size: $fontSizeSmall;
+  padding-top: 8px;
+  a{
+    color: $white;
+  }
+}
+.dropdown-menu{
+  @include border-radius($baseBorderRadius);
+
+}

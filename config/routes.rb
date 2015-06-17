@@ -1,4 +1,6 @@
 Okgtd::Application.routes.draw do
+  resources :binders
+
   root 'static_page#home'
 
   resources :tags
@@ -15,6 +17,8 @@ Okgtd::Application.routes.draw do
       put 'move_act'
       get 'copy'
       post 'copy_act'
+      get 'add_deadline_before_to_schedule'
+      put 'add_deadline_before_to_schedule_act'
 
     end
 

@@ -2,18 +2,88 @@
 <html>
 <head>
   <title>Okgtd</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
 
-<%= yield %>
-<hr>
-<div class="footer">
-  <%= link_to 'Home', static_page_home_path %>
+<div id="wrap">
+
+  <div class="container" id="desktop">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="<%= static_page_home_path %>">OKGTD</a>
+
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="<%= static_page_home_path %>">主页</a></li>
+              <li><a href="<%= folders_path %>">文件柜</a></li>
+              <li><a href="<%= stuffs_path %>">材料</a></li>
+              <li><a href="<%= tags_path %>">标签</a></li>
+            </ul>
+
+            <div class="nav-right-box">
+              <% if user_signed_in? %>
+                  <ul>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-2x"></i> <%= current_user.email %>
+                        <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+
+
+                        <!--<li><a href="#">消息</a></li>-->
+                        <!--<li class="divider"></li>-->
+
+                        <li><a href="<%= edit_user_registration_path %>"><i class="fa fa-cog"></i> 设置</a></li>
+                        <li><a data-method="delete" href="<%= destroy_user_session_path %>">
+                          <i class="fa fa-power-off"></i> 退出</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+              <% else %>
+                  <p>不是会员？点击这里 <%= link_to "注册", new_user_registration_path %>
+                    或 <%= link_to "登录", new_user_session_path %>
+                    <i class="fa fa-user fa-2x"></i></p>
+
+              <% end %>
+            </div>
+<!--end nav-right-box-->
+          </div>
+
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </div>
+    <!--//end nav bar-->
+    <% if notice %>
+        <div class="alert alert-info>"><span><%= notice %></span> </div>
+    <% elsif alert %>
+        <div class="alert alert-error>"><span><%= alert %></span></div>
+    <% end %>
+
+    <%= yield %>
+  </div>
+  <!--//end container-->
+  <div id="push"></div>
+
+
 </div>
+<!--//end #warp-->
+
+
+<div id="footer">
+  <div class="container">
+    <p>(c)2015. Project OKGTD.com created by <a href="http://www.zhihu.com/people/davidtsang">David Tsang</a>. </p>
+  </div>
+</div>
+
 </body>
 </html>

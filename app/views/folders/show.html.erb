@@ -1,14 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @folder.name %>
-</p>
+<h1>
+  文件柜::<%= @folder.name %>
+</h1>
 
-
+<% if @folder.stuffs_count > 0 %>
     <% @folder.stuffs.each do |stuff| %>
-    <p><%=  link_to stuff.content, stuff_path(stuff.id) %>  </p>
+        <table class="table">
+          <tr>
+            <td>
+              <%= link_to truncate(stuff.content, length: 40), stuff_path(stuff.id) %>   </td>
+          </tr>
+        </table>
     <% end %>
+<% else %>
+    <p>这个文件柜是空的。 </p>
+<% end %>
 
 <%= link_to 'Edit', edit_folder_path(@folder) %> |
 <%= link_to 'Back', folders_path %>

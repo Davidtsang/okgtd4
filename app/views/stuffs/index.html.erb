@@ -1,6 +1,6 @@
-<h1>Listing stuffs</h1>
+<h1>材料</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Content</th>
@@ -16,7 +16,7 @@
   <tbody>
     <% @stuffs.each do |stuff| %>
       <tr>
-        <td><%= stuff.content %></td>
+        <td><%= truncate stuff.content, length: 40  %></td>
         <td><%= stuff.deadline %></td>
         <td><%= stuff.status %></td>
         <td><%= stuff.user_id %></td>
@@ -30,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Stuff', new_stuff_path %>
+<%= link_to 'New Stuff', new_stuff_path, class: 'btn' %>

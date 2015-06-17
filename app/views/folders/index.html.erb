@@ -1,22 +1,20 @@
-<h1>Listing folders</h1>
+<h1>文件柜</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th width="90%">名称</th>
+      <th>文件数量</th>
+
     </tr>
   </thead>
 
   <tbody>
     <% @folders.each do |folder| %>
       <tr>
-        <td><%= folder.name %> ( <%= folder.stuffs_count %> )</td>
-        <td><%= link_to 'Show', folder %></td>
-        <td><%= link_to 'Edit', edit_folder_path(folder) %></td>
-        <td><%= link_to 'Destroy', folder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to folder.name, folder %> </td>
+        <td><%= folder.stuffs_count %></td>
+
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +22,4 @@
 
 <br>
 
-<%= link_to 'New Folder', new_folder_path %>
+<%= link_to 'New Folder', new_folder_path , class: 'btn' %>

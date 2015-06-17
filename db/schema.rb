@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615065426) do
+ActiveRecord::Schema.define(version: 20150617033836) do
+
+  create_table "binders", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "status"
+    t.integer  "stuffs_count", default: 0
+    t.integer  "the_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "folders", force: true do |t|
     t.string   "name"
@@ -32,21 +42,22 @@ ActiveRecord::Schema.define(version: 20150615065426) do
     t.integer  "folder_id",  null: false
   end
 
-  create_table "tags", force: true do |t|
-    t.string   "name"
-    t.integer  "user_id",    null: false
-    t.integer  "status"
-    t.integer  "the_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "tags_stuffs", id: false, force: true do |t|
+  create_table "stuffs_tags", id: false, force: true do |t|
     t.integer "tag_id"
     t.integer "stuff_id"
   end
 
-  add_index "tags_stuffs", ["tag_id", "stuff_id"], name: "index_tags_stuffs_on_tag_id_and_stuff_id", unique: true
+  add_index "stuffs_tags", ["tag_id", "stuff_id"], name: "index_stuffs_tags_on_tag_id_and_stuff_id", unique: true
+
+  create_table "tags", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id",                  null: false
+    t.integer  "status"
+    t.integer  "the_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "stuffs_count", default: 0
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

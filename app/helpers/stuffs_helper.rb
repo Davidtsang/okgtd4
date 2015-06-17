@@ -1,5 +1,7 @@
 module StuffsHelper
   STUFF_STATUS_NORMAL = 0
+  STUFF_STATUS_DONE = -1
+  STUFF_STATUS_DELETE = -2
 
 
 end

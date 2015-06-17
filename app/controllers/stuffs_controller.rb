@@ -9,7 +9,7 @@ class StuffsController < ApplicationController
 
     is_exist_ids = @stuff.tags.ids.to_a
     if is_exist_ids.count > 0
-      @tags  = current_user.tags.where(["tags.id NOT IN (?)", is_exist_ids])
+      @tags = current_user.tags.where(["tags.id NOT IN (?)", is_exist_ids])
     else
       @tags = current_user.tags.find_all
     end
@@ -24,11 +24,56 @@ class StuffsController < ApplicationController
 
   end
 
+  def add_deadline_before_to_schedule
+    @stuff = current_user.stuffs.find(params[:id])
+
+
+  end
+
+  def add_deadline_before_to_schedule_act
+    @stuff = current_user.stuffs.find(params[:id])
+    #update deadline
+
+    @stuff.deadline = DateTime.new(params[:stuff]["deadline(1i)"].to_i,
+                               params[:stuff]["deadline(2i)"].to_i,
+                               params[:stuff]["deadline(3i)"].to_i,
+                               params[:stuff]["deadline(4i)"].to_i,
+                               params[:stuff]["deadline(5i)"].to_i)
+
+    #get schedule folder
+    schedule_folder = current_user.folders.where(:folder_type=> FoldersHelper::FOLDER_TYPE_SCHEDULE).first
+
+    @stuff.folder_id = schedule_folder.id
+
+    @stuff.save!
+
+    #find folder
+    redirect_to @stuff
+
+  end
+
   def move_act
     @stuff = current_user.stuffs.find(params[:id])
-    @stuff.folder_id = params[:target_folder]
-    @stuff.save!
-    redirect_to @stuff
+    target_folder = params[:target_folder]
+    @stuff.folder_id = target_folder
+
+    folder = Folder.find(target_folder)
+    if folder.folder_type == FoldersHelper::FOLDER_TYPE_SCHEDULE
+      redirect_to :action => 'add_deadline_before_to_schedule', id: @stuff.id
+
+    else
+      if folder.folder_type == FoldersHelper::FOLDER_TYPE_DONE
+        @stuff.status = StuffsHelper::STUFF_STATUS_DONE
+      elsif folder.folder_type == FoldersHelper::FOLDER_TYPE_TRASH
+        @stuff.status = StuffsHelper::STUFF_STATUS_DELETE
+
+        #elsif to schedule folder ,let user add deadline time
+      elsif folder.folder_type == FoldersHelper::FOLDER_TYPE_SCHEDULE
+      end
+
+      @stuff.save!
+      redirect_to @stuff
+    end
 
   end
 
@@ -63,7 +108,7 @@ class StuffsController < ApplicationController
 
     stuff_tags.each do |tid|
 
-      tag =@stuff.tags.find(   tid)
+      tag =@stuff.tags.find(tid)
 
       if tag
         @stuff.tags.delete(tag)
@@ -80,7 +125,7 @@ class StuffsController < ApplicationController
     id = params[:id]
 
     stuff_tags.each do |tid|
-        TagsStuffs.create!(tag_id: tid, stuff_id: id)
+      StuffsTags.create!(tag_id: tid, stuff_id: id)
     end
 
     redirect_to action: "show", id: id
@@ -98,6 +143,7 @@ class StuffsController < ApplicationController
 
   def new
     @stuff = Stuff.new
+
     respond_with(@stuff)
   end
 
@@ -111,6 +157,7 @@ class StuffsController < ApplicationController
     @stuff = folder.stuffs.new(stuff_params)
     @stuff.status = StuffsHelper::STUFF_STATUS_NORMAL
     @stuff.user_id = current_user.id
+
     @stuff.save
 
     respond_with(@stuff)
@@ -130,6 +177,7 @@ class StuffsController < ApplicationController
 
   private
   def set_stuff
+
     @stuff = Stuff.find(params[:id])
   end
 

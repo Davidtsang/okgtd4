@@ -1,0 +1,10 @@
+<h1>Add Deadline before move to shcedule</h1>
+
+<%= form_tag(add_deadline_before_to_schedule_act_stuff_path, method: 'put') do %>
+    <label>增加一个截止日期:</label>
+
+    <%= datetime_select  :stuff, :deadline,{}, {:class => "input-small"}  %><br>
+
+
+    <%= submit_tag "添加" ,:class=>'btn' %>
+<% end %>
