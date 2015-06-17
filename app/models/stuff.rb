@@ -3,7 +3,7 @@ class Stuff < ActiveRecord::Base
 
   belongs_to :folder, :counter_cache => true
 
-  belongs_to :binder, :counter_cache => true
+
 
   has_and_belongs_to_many :tags
 

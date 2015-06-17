@@ -9,6 +9,10 @@ $baseFontSize:13px;
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
+.muted
+{
+  font-size: $fontSizeMini;
+}
 html,
 body {
   height: 100%;

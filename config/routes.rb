@@ -1,6 +1,4 @@
 Okgtd::Application.routes.draw do
-  resources :binders
-
   root 'static_page#home'
 
   resources :tags
@@ -11,15 +9,24 @@ Okgtd::Application.routes.draw do
     member do
       get 'add_tags'
       post 'create_stuff_tags'
+
       get 'remove_tags'
       delete 'remove_tags_act'
+
       get 'move'
       put 'move_act'
+
       get 'copy'
       post 'copy_act'
+
       get 'add_deadline_before_to_schedule'
       put 'add_deadline_before_to_schedule_act'
 
+      get 'select_binder'
+      put 'select_binder_act'
+
+      get 'new_binder'
+      post 'create_binder'
     end
 
   end

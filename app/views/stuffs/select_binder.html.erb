@@ -1,0 +1,18 @@
+<h1>选择活页夹</h1>
+<p>要把这份材料加入项目文件柜，你需要选择或创建一个活页夹。</p>
+<p>在项目文件柜中的活页夹：</p>
+
+<% if @binders.count > 0 %>
+    <%= form_tag(select_binder_act_stuff_path, method: 'put' ) do %>
+
+        <select name="target_binder" >
+          <%= options_for_select(@binders.map { |b| [b.name, b.id] }) %>
+        </select>
+<br>
+        <%= submit_tag '确认' , :class=>'btn' %>
+
+    <% end %>
+<% else %>
+    <p class="muted">还没有任何活页夹可供选择。</p>
+<% end %>
+<a href="<%= new_binder_stuff_path %>">+ 创建新活页夹</a>

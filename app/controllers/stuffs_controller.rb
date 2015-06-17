@@ -1,11 +1,10 @@
 class StuffsController < ApplicationController
-  before_action :set_stuff, only: [:show, :edit, :update, :destroy]
+  before_action :set_stuff, only: [:show, :edit, :update, :destroy, :add_tags, :move, :move_act,:add_deadline_before_to_schedule, :add_deadline_before_to_schedule_act, :copy, :copy_act, :remove_tags, :remove_tags_act, :select_binder, :select_binder_act]
+
   before_action :authenticate_user!
   respond_to :html
 
   def add_tags
-    @stuff = current_user.stuffs.find(params[:id])
-
 
     is_exist_ids = @stuff.tags.ids.to_a
     if is_exist_ids.count > 0
@@ -14,34 +13,30 @@ class StuffsController < ApplicationController
       @tags = current_user.tags.find_all
     end
 
-
   end
 
   def move
-    @stuff = current_user.stuffs.find(params[:id])
+
     #move to other folder
     @folders = current_user.folders.find_all
 
   end
 
   def add_deadline_before_to_schedule
-    @stuff = current_user.stuffs.find(params[:id])
-
 
   end
 
   def add_deadline_before_to_schedule_act
-    @stuff = current_user.stuffs.find(params[:id])
-    #update deadline
 
+    #update deadline
     @stuff.deadline = DateTime.new(params[:stuff]["deadline(1i)"].to_i,
-                               params[:stuff]["deadline(2i)"].to_i,
-                               params[:stuff]["deadline(3i)"].to_i,
-                               params[:stuff]["deadline(4i)"].to_i,
-                               params[:stuff]["deadline(5i)"].to_i)
+                                   params[:stuff]["deadline(2i)"].to_i,
+                                   params[:stuff]["deadline(3i)"].to_i,
+                                   params[:stuff]["deadline(4i)"].to_i,
+                                   params[:stuff]["deadline(5i)"].to_i)
 
     #get schedule folder
-    schedule_folder = current_user.folders.where(:folder_type=> FoldersHelper::FOLDER_TYPE_SCHEDULE).first
+    schedule_folder = current_user.folders.where(:folder_type => FoldersHelper::FOLDER_TYPE_SCHEDULE).first
 
     @stuff.folder_id = schedule_folder.id
 
@@ -52,14 +47,63 @@ class StuffsController < ApplicationController
 
   end
 
+  def new_binder
+    @stuff = Stuff.new
+    @stuff.stuff_type = StuffsHelper::STUFF_TYPE_BINDER
+    respond_with(@stuff)
+  end
+
+  def create_binder
+    binder = current_user.stuffs.new(stuff_params)
+    project_folder = current_user.folders.where(:folder_type => FoldersHelper::FOLDER_TYPE_PROJCET).first
+    binder.folder_id = project_folder.id
+
+    binder.status = StuffsHelper::BINDER_STATUS_NORMAL
+
+    binder.save
+
+    redirect_to :action => 'select_binder', :id=> params[:id]
+
+  end
+
+  def select_binder
+
+    project_folder = current_user.folders.where(:folder_type => FoldersHelper::FOLDER_TYPE_PROJCET).first
+    @binders = current_user.stuffs.where("stuff_type =? and folder_id  =?", StuffsHelper::STUFF_TYPE_BINDER,  project_folder.id )
+
+  end
+
+  def select_binder_act
+
+    #put stuff parent id is binder id
+    binder = current_user.stuffs.find(params[:target_binder])
+    @stuff.parent_id= binder.id
+
+    #put stuff folder_id = binder.folder_id
+    @stuff.folder_id= binder.folder_id
+
+    #save
+    @stuff.save!
+
+    #render stuff
+    redirect_to @stuff
+
+  end
+
   def move_act
-    @stuff = current_user.stuffs.find(params[:id])
+
     target_folder = params[:target_folder]
     @stuff.folder_id = target_folder
 
     folder = Folder.find(target_folder)
     if folder.folder_type == FoldersHelper::FOLDER_TYPE_SCHEDULE
       redirect_to :action => 'add_deadline_before_to_schedule', id: @stuff.id
+
+    #remove to project create/select binder
+    elsif folder.folder_type== FoldersHelper::FOLDER_TYPE_PROJCET and @stuff.parent_id == nil
+
+      redirect_to :action => 'select_binder', id: @stuff.id
+
 
     else
       if folder.folder_type == FoldersHelper::FOLDER_TYPE_DONE
@@ -78,12 +122,11 @@ class StuffsController < ApplicationController
   end
 
   def copy
-    @stuff = current_user.stuffs.find(params[:id])
+
     @folders = current_user.folders.find_all
   end
 
   def copy_act
-    stuff = current_user.stuffs.find(params[:id])
 
     new_stuff = current_user.stuffs.build
     new_stuff.content = stuff.content
@@ -104,7 +147,6 @@ class StuffsController < ApplicationController
     stuff_tags = params[:stuff_tags]
     id = params[:id]
 
-    @stuff = current_user.stuffs.find(id)
 
     stuff_tags.each do |tid|
 
@@ -133,7 +175,7 @@ class StuffsController < ApplicationController
   end
 
   def index
-    @stuffs = current_user.stuffs.all
+    @stuffs = current_user.stuffs.where(:stuff_type => StuffsHelper::STUFF_TYPE_SINGERPAGE)
     respond_with(@stuffs)
   end
 
@@ -157,7 +199,7 @@ class StuffsController < ApplicationController
     @stuff = folder.stuffs.new(stuff_params)
     @stuff.status = StuffsHelper::STUFF_STATUS_NORMAL
     @stuff.user_id = current_user.id
-
+    @stuff.stuff_type = StuffsHelper::STUFF_TYPE_SINGERPAGE
     @stuff.save
 
     respond_with(@stuff)
@@ -178,10 +220,10 @@ class StuffsController < ApplicationController
   private
   def set_stuff
 
-    @stuff = Stuff.find(params[:id])
+    @stuff = current_user.stuffs.find(params[:id])
   end
 
   def stuff_params
-    params.require(:stuff).permit(:content, :deadline, :status, :user_id, :folder_id)
+    params.require(:stuff).permit(:content, :deadline, :status, :user_id, :folder_id, :name, :stuff_type)
   end
 end
