@@ -15,4 +15,4 @@
 <% else %>
     <p class="muted">还没有任何活页夹可供选择。</p>
 <% end %>
-<a href="<%= new_binder_stuff_path %>">+ 创建新活页夹</a>
+<a href="<%= new_binder_path(:folder_id=> FoldersHelper::FOLDER_TYPE_PROJCET) %>">+ 创建新活页夹</a>

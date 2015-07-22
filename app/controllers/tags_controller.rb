@@ -9,6 +9,7 @@ class TagsController < ApplicationController
   end
 
   def show
+    @stuffs = @tag.stuffs.find_all
     respond_with(@tag)
   end
 

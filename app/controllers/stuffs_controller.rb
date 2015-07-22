@@ -48,8 +48,8 @@ class StuffsController < ApplicationController
   end
 
   def new_binder
-    @stuff = Stuff.new
-    @stuff.stuff_type = StuffsHelper::STUFF_TYPE_BINDER
+    @stuff = Binder.new
+
     respond_with(@stuff)
   end
 
@@ -69,14 +69,15 @@ class StuffsController < ApplicationController
   def select_binder
 
     project_folder = current_user.folders.where(:folder_type => FoldersHelper::FOLDER_TYPE_PROJCET).first
-    @binders = current_user.stuffs.where("stuff_type =? and folder_id  =?", StuffsHelper::STUFF_TYPE_BINDER,  project_folder.id )
+    @binders = current_user.binders.where(:folder_id=> project_folder.id )
 
   end
 
   def select_binder_act
 
     #put stuff parent id is binder id
-    binder = current_user.stuffs.find(params[:target_binder])
+    binder = current_user.binders.find(params[:target_binder])
+
     @stuff.parent_id= binder.id
 
     #put stuff folder_id = binder.folder_id
@@ -100,7 +101,7 @@ class StuffsController < ApplicationController
       redirect_to :action => 'add_deadline_before_to_schedule', id: @stuff.id
 
     #remove to project create/select binder
-    elsif folder.folder_type== FoldersHelper::FOLDER_TYPE_PROJCET and @stuff.parent_id == nil
+    elsif folder.folder_type== FoldersHelper::FOLDER_TYPE_PROJCET and @stuff.parent_id == nil and @stuff.type != "Binder"
 
       redirect_to :action => 'select_binder', id: @stuff.id
 
@@ -175,7 +176,7 @@ class StuffsController < ApplicationController
   end
 
   def index
-    @stuffs = current_user.stuffs.where(:stuff_type => StuffsHelper::STUFF_TYPE_SINGERPAGE)
+    @stuffs = current_user.stuffs.all
     respond_with(@stuffs)
   end
 
@@ -199,7 +200,7 @@ class StuffsController < ApplicationController
     @stuff = folder.stuffs.new(stuff_params)
     @stuff.status = StuffsHelper::STUFF_STATUS_NORMAL
     @stuff.user_id = current_user.id
-    @stuff.stuff_type = StuffsHelper::STUFF_TYPE_SINGERPAGE
+
     @stuff.save
 
     respond_with(@stuff)
@@ -217,13 +218,13 @@ class StuffsController < ApplicationController
     respond_with(@stuff)
   end
 
-  private
+  protected
   def set_stuff
 
     @stuff = current_user.stuffs.find(params[:id])
   end
 
   def stuff_params
-    params.require(:stuff).permit(:content, :deadline, :status, :user_id, :folder_id, :name, :stuff_type)
+    params.require(:stuff).permit(:content, :deadline, :status, :user_id, :folder_id, :name, :type)
   end
 end

@@ -1,0 +1,31 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th>内容</th>
+    <th>截止日期</th>
+    <th>状态</th>
+    <th>位置</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @stuffs.each do |stuff| %>
+      <tr>
+        <% if stuff.type == 'Binder' %>
+            <td><i class="fa fa-folder-open"></i>  <span <%= stuff_class_by_status(stuff.status) %>><%= link_to stuff.name , stuff %></span></td>
+        <% else %>
+            <td><i class="fa fa-file-o"></i> <span <%= stuff_class_by_status(stuff.status) %>><%= link_to truncate( stuff.content, length: 40), stuff %></span></td>
+        <% end %>
+
+        <td><%= stuff.deadline %></td>
+        <td><%= stuff_status_to_name stuff.status %></td>
+
+        <td><%= stuff.folder.name %></td>
+        <td><%= link_to '编辑', edit_stuff_path(stuff) %></td>
+        <td><%= link_to '删除', stuff, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

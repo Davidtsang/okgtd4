@@ -1,5 +1,5 @@
 class FoldersController < ApplicationController
-  before_action :set_folder, only: [:show, :edit, :update, :destroy]
+  before_action :set_folder, only: [:show, :show_projcet, :edit, :update, :destroy]
   before_action :authenticate_user!
 
   respond_to :html
@@ -10,8 +10,16 @@ class FoldersController < ApplicationController
     respond_with(@folders)
   end
 
+
+
   def show
-    respond_with(@folder)
+    if @folder.folder_type== FoldersHelper::FOLDER_TYPE_PROJCET
+
+       render 'show_project'
+    else
+      respond_with(@folder)
+    end
+
   end
 
   def new

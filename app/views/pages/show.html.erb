@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <%= simple_format @page.content %>
+</p>
+
+<hr>
+<ul class="inline">
+  <li><strong>Deadline:</strong>
+    <%= @page.deadline %></li>
+
+  <li><strong>状态:</strong>
+    <%= stuff_status_to_name @page.status %></li>
+  <li>
+    <i class="fa fa-tag"></i><strong>标签:</strong>
+    <% @page.tags.each do |tag| %>
+        <%= tag.name %>
+    <% end %>
+    <span><%= link_to '移除', remove_tags_stuff_path %></span>
+    <%= link_to '增加', add_tags_stuff_path %>
+  </li>
+</ul>
+
+
+
+
+
+<ul class="unstyled">
+
+<li><i class="fa fa-long-arrow-right"></i> <%= link_to '移动到其它文件柜',  move_stuff_path  %></li>
+<li><i class="fa fa-files-o"></i> <%= link_to '复制到其它文件柜', copy_stuff_path %></li>
+
+<li><i class="fa fa-pencil-square-o"></i> <%= link_to '编辑', edit_page_path(@page) %></li>
+<li><%= link_to '返回', pages_path %></li>
+</ul>

@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>
+  文件柜::<%= @folder.name %>
+</h1>
+
+<% if @folder.binders.empty? %>
+    <p class="muted">这个文件柜是空的。 </p>
+<% else %>
+    <table class="table">
+      <tr>
+        <th>项目名称</th>
+        <th>文档数量</th>
+      </tr>
+    <% @folder.binders.each do |binder| %>
+
+          <tr>
+            <td><i class="fa fa-folder-open-o"></i>
+              <%= link_to binder.name, binder_path(binder) %>   </td>
+            <td><%= binder.pages.count %></td>
+          </tr>
+
+    <% end %>
+    </table>
+<% end %>
+
+<ul class="unstyled">
+  <li><%= link_to '创建一个新项目', new_binder_path(:folder_id => @folder.id) %></li>
+  </li>
+
+  <li><%= link_to 'Edit', edit_folder_path(@folder) %></li>
+  <li><%= link_to 'Back', folders_path %></li>
+</ul>

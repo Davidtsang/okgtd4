@@ -49,7 +49,7 @@ h1{
 
 .nav-right-box {
   @extend .pull-right;
-  font-size: $fontSizeSmall;
+
   padding-top: 8px;
   a{
     color: $white;
@@ -58,4 +58,12 @@ h1{
 .dropdown-menu{
   @include border-radius($baseBorderRadius);
 
+}
+
+.item-done{
+  background-color: chartreuse;
+}
+
+.item-removed{
+  text-decoration: line-through;
 }

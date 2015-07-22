@@ -11,8 +11,22 @@
         </div>
     <% end %>
 
+    <% if @stuff.type== 'Binder' %>
+        <div class="field">
+          <%= f.label :name %><br>
+          <%= f.text_field :name %>
+        </div>
+    <% end %>
+
+    <% if not @stuff.deadline.nil? %>
+        <div class="field">
+          <%= f.label :deadline, "截止日期" %><br>
+          <%= f.datetime_select :deadline, {}, {:class => "input-small"} %>
+        </div>
+    <% end %>
+
     <div class="field">
-      <%= f.label :content %><br>
+      <%= f.label :content %>
       <%= f.text_area :content %>
     </div>
 

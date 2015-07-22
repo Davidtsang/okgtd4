@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>
+  <i class="fa fa-folder-open-o"></i>
+  <%= @binder.name %>
+</h1>
+
+<p>
+  <strong>Status:</strong>
+  <%= @binder.status %>
+</p>
+
+
+<p>
+  <strong>Tags:</strong>
+  <% @binder.tags.each do |tag| %>
+      <%= tag.name %>
+  <% end %>
+  <span><%= link_to 'Remove', remove_tags_stuff_path %></span>
+</p>
+
+<p>
+  <% if @binder.pages.empty? %>
+    <p>还没有任何文件。</p>
+<% else %>
+    <table class="table">
+      <th>名称</th> <th>位置</th>
+      <% @binder.pages.each do |page| %>
+
+          <tr>
+            <td><span <%= stuff_class_by_status(page.status) %>><%= link_to truncate(page.content, length: 40), page_path(page) %></span></td>
+
+            <td><%= page.folder.name %></td>
+          </tr>
+
+      <% end %>
+    </table>
+<% end %>
+</p>
+<%= link_to 'Add tag to this binder', add_tags_stuff_path %>
+<%= link_to 'Move to other folder', move_stuff_path %>
+<%= link_to 'Copy to other folder', copy_stuff_path %>
+
+<%= link_to 'Edit', edit_stuff_path(@binder) %> |
+<%= link_to 'Back', stuffs_path %>

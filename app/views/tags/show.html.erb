@@ -1,34 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @tag.name %>
-</p>
 
-<p>
-  <strong>User:</strong>
-  <%= @tag.user_id %>
-</p>
+ <h2><i class="fa fa-tag"></i> <%= @tag.name %></h2>
 
-<p>
-  <strong>Status:</strong>
-  <%= @tag.status %>
-</p>
+<%= render partial: 'layouts/stuffs_table' %>
 
-<p>
-  <strong>The type:</strong>
-  <%= @tag.the_type %>
-</p>
-
-<p>
-  <strong>Stuffs of this tag:</strong>
-
-  <% @tag.stuffs.find_all.each do |stuff| %>
-
-  <%= link_to stuff.content , stuff_path(stuff.id) %>
-
-  <% end %>
-</p>
 
 
 <%= link_to 'Edit', edit_tag_path(@tag) %> |

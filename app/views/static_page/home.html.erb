@@ -1,5 +1,115 @@
 <h1>主页</h1>
 
-<%= link_to 'Add new stuff to inbox',  new_stuff_path %>
+<% if user_signed_in? %>
+    <p>Welcome, <%= current_user.email %> </p>
+    <h4>新建文档</h4>
+    <%= form_for(@page) do |f| %>
+        <% if @page.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@page.errors.count, "error") %> prohibited this stuff from being saved:</h2>
+
+              <ul>
+                <% @page.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="field">
+
+          <%= f.text_area :content %>
+        </div>
+
+
+
+        <div class="actions">
+          <%= f.submit '提交', :class => 'btn' %>
+        </div>
+    <% end %>
+
+    <!--- new project--->
+
+
+    <!--last 7 stuffs-->
+    <h4>下一步动作</h4>
+    <% if not @next_actions.empty? %>
+        <% @next_actions.each do |n| %>
+            <table class="table">
+              <tr>
+                <td><%= link_to n.content, page_path(n) %></td>
+              </tr>
+            </table>
+        <% end %>
+    <% else %>
+        <p>还没有任何下一步动作</p>
+    <% end %>
+
+    <h4>最新的7个材料：</h4>
+    <table class="table">
+      <tr>
+        <th>材料</th>
+        <th>创建日期</th>
+      </tr>
+
+      <% @stuffs.each do |stuff| %>
+
+
+          <tr>
+            <% if stuff.type == "Binder" %>
+
+                <td><i class="fa fa-folder-open"></i> <%= link_to stuff.name, binder_path(stuff) %></td>
+
+            <% else %>
+
+                <td>
+                  <span  <%= stuff_class_by_status(stuff.status) %> ><i class="fa fa-file-o"></i>  <%= link_to stuff.content, page_path(stuff) %></span>
+                </td>
+
+            <% end %>
+
+            <td> <%= distance_of_time_in_words_to_now(stuff.created_at) %>之前</td>
+          </tr>
+
+      <% end %> </table>
+    <!--end last 7 stuffs-->
+
+    <!--today schedule-->
+
+    <h4>今日截止的东西：</h4>
+    <% if @today_schedules.empty? %>
+        <p>没有。</p>
+    <% else %>
+        <% @today_schedules.each do |ts| %>
+
+            <table class="table">
+              <tr>
+                <td>
+                  <% link_to ts.content, page_path(ts) %></td>
+              </tr>
+            </table>
+        <% end %>
+    <% end %>
+
+
+    <h4>明天截止的东西：</h4>
+    <% if @tomorrow_schedules.empty? %>
+        <p>没有。</p>
+    <% else %>
+        <% @tomorrow_schedules.each do |ts| %>
+
+            <table class="table">
+              <tr>
+                <td>
+                  <% link_to ts.content, page_path(ts) %></td>
+              </tr>
+            </table>
+        <% end %>
+    <% end %>
+
+    <!--end logined-->
+<% else %>
+    <p>一个简单易用的在线GTD效率工具。</p>
+<% end %>
 
 

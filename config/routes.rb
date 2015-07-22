@@ -5,6 +5,10 @@ Okgtd::Application.routes.draw do
 
   resources :folders
 
+  resources :binders
+
+  resources :pages
+
   resources :stuffs do
     member do
       get 'add_tags'

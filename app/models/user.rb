@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   has_many :stuffs
   has_many :folders
   has_many :tags
+  has_many :binders
+  has_many :pages
 
 
   after_create :add_default_folder

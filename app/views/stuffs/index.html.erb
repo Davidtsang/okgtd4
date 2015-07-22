@@ -1,33 +1,7 @@
-<h1>材料</h1>
+<h1>所有材料</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Content</th>
-      <th>Deadline</th>
-      <th>Status</th>
-      <th>User</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @stuffs.each do |stuff| %>
-      <tr>
-        <td><%= truncate stuff.content, length: 40  %></td>
-        <td><%= stuff.deadline %></td>
-        <td><%= stuff.status %></td>
-        <td><%= stuff.user_id %></td>
-        <td><%= link_to 'Show', stuff %></td>
-        <td><%= link_to 'Edit', edit_stuff_path(stuff) %></td>
-        <td><%= link_to 'Destroy', stuff, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render partial: 'layouts/stuffs_table' %>
 
 <br>
-
-<%= link_to 'New Stuff', new_stuff_path, class: 'btn' %>
+<a href="<%= new_page_path %>" class="btn"><i class="fa fa-file-o"></i>  新建文档</a>
+  <br><%= link_to '新建活页夹', new_binder_path %>

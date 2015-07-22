@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617045700) do
+ActiveRecord::Schema.define(version: 20150617182839) do
 
   create_table "binders", force: true do |t|
     t.string   "name"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20150617045700) do
     t.datetime "updated_at"
     t.integer  "folder_id",  null: false
     t.string   "name"
-    t.integer  "stuff_type"
+    t.string   "type",       null: false
     t.integer  "parent_id"
   end
 

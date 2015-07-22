@@ -4,4 +4,5 @@ class StuffsTags < ActiveRecord::Base
   belongs_to :tag
   belongs_to :stuff
 
+
 end
